@@ -16,6 +16,7 @@ jobs:
         env:
           cache-name: cache-zephyr-modules
         with:
+          submodules: 'recursive' # Fetches Git submodules recursively
           path: |
             modules/
             tools/
