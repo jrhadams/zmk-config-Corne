@@ -16,6 +16,9 @@
 #define THUMBS LH2 LH1 LH0 RH0 RH1 RH2                                      // thumb keys
 
 /* left-hand HRMs */
+
+
+/ {
 ZMK_BEHAVIOR(hml, hold_tap,
     flavor = "balanced";
     tapping-term-ms = <280>;
@@ -36,8 +39,6 @@ ZMK_BEHAVIOR(hmr, hold_tap,
     hold-trigger-key-positions = <KEYS_L THUMBS>;
     hold-trigger-on-release;             // delay positional check until key-release
 )
-
-/ {
 		macros {
 				assign_left: assign_left {
 					label = "ZM_assign_left";
