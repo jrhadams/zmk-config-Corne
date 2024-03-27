@@ -37,7 +37,7 @@ jobs:
       - name: West Build (Corne Left)
         run: west build -s zmk/app -b nice_nano_v2 -- -DSHIELD=corne_left -DZMK_CONFIG="${GITHUB_WORKSPACE}/config"
         with:
-          submodules: 'recursive'
+          submodules: recursive
       - name: Corne Left Kconfig file
         run: cat build/zephyr/.config | grep -v "^#" | grep -v "^$"
       - name: Rename zmk.uf2
@@ -48,9 +48,9 @@ jobs:
           name: firmware-zmk-sweep
           path: corne_left_nice_nano_v2.uf2
       - name: West Build (Corne Right)
-        run: west build --pristine -s zmk/app -b nice_nano_v2 -- -DSHIELD=corne_right -DZMK_CONFIG="${GITHUB_WORKSPACE}/config"
         with:
-          submodules: 'recursive'
+          submodules: recursive
+        run: west build --pristine -s zmk/app -b nice_nano_v2 -- -DSHIELD=corne_right -DZMK_CONFIG="${GITHUB_WORKSPACE}/config"
       - name: Corne Right Kconfig file
         run: cat build/zephyr/.config | grep -v "^#" | grep -v "^$"
       - name: Rename zmk.uf2
