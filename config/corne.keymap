@@ -92,14 +92,14 @@ ZMK_BEHAVIOR(hmr, hold_tap,
                 lower_layer {
                         label = "NUMBER";
 // -----------------------------------------------------------------------------------------
-// | LFT  | DWN |  ,  |  .  |  UP | RGT |   | BTCLR| BT1 | BT2 | BT3 | BT4 | BT5  |   
-// |  ESC |  1  |  2  |  3  |  4  |  5  |   |  6   |  7  |  8  |  9  |  0  | ESC  |
-// | SHFT | rgbn|rgbc |rgbt | pw_tg |   |   | prev| vol-| play| vol+| next |      |
-//                    | GUI |     | SPC |   | ENT |     | BKSP |
+// | LFT  | DWN |  ,    |  .    |  UP   | RGT   |   | BTCLR| BT1 | BT2 | BT3 | BT4 | BT5  |   
+// |  ESC |  1  |  2    |  3    |  4    |  5    |   |  6   |  7  |  8  |  9  |  0  | ESC  |
+// | SHFT | rgbn| rgb d | rgbt  | rgb i | pw_tg |   | prev| vol-| play| vol+| next |      |
+//                    | GUI | SPC |     |   | GUI | RET | BKSP |
                         bindings = <
    &kp LEFT &kp  DOWN &kp COMMA  &kp DOT &kp UP &kp RIGHT      &bt BT_CLR &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4   
    &kp ESC &hml LGUI N1 &hml LALT N2 &hml LCTRL N3 &hml LSHIFT N4 &kp N5      &kp N6 &hmr RSHIFT N7  &hmr RALT N8 &hmr RCTRL N9  &hmr LGUI N0 &kp ESC
-   &kp LSHFT  &rgb_ug RGB_EFF   &rgb_ug RGB_COLOR_HSB(136, 77, 20)  &rgb_ug RGB_TOG  &ext_power EP_TOG   &trans &kp C_PREV &kp C_VOLUME_DOWN &kp C_PLAY_PAUSE &kp C_VOL_UP &kp C_NEXT  &trans
+   &kp LSHFT  &rgb_ug RGB_EFF   &rgb_ug RGB_HUD   &rgb_ug RGB_TOG  &rgb_ug RGB_HUI &ext_power EP_TOG   &kp C_PREV &kp C_VOLUME_DOWN &kp C_PLAY_PAUSE &kp C_VOL_UP &kp C_NEXT  &trans
                           	        &kp LGUI     &kp SPACE    &trans      &kp LGUI  &kp RET   &kp BKSP
                         >;
                 };
@@ -110,13 +110,26 @@ ZMK_BEHAVIOR(hmr, hold_tap,
 // |  TAB |     |     |  +  |  *  |  &  |   |  ^  |  [  |  ]  |     |     | BKSP |
 // | CTRL |  !  |  @  |  #  |  $  |  %  |   |  -  |  (  |  )  |     |  \  |  `   |
 // | SHFT |     | <-  | ->  | =>  |     |   |  _  |  {  |  }  |     | "|" |  ~   |
-//                    | GUI |     | SPC |   | ENT |  =  | ALT |
+//                    | GUI | SPC |     |   |     | RET | BKSP |
                         bindings = <
-   &kp LCTRL &trans   &trans &trans   &trans   &trans      &kp MINUS &kp EQUAL &kp LBKT        &kp RBKT &kp BSLH &kp GRAVE
+   &kp LCTRL &trans   &trans  &PLUS   &trans   &trans      &kp MINUS &kp EQUAL &kp LBKT        &kp RBKT &kp BSLH &kp GRAVE
    &kp  TAB  &kp EXCL &kp AT &kp HASH &kp DLLR &kp PRCNT   &kp CARET &kp AMPS  &kp KP_MULTIPLY &kp LPAR &kp RPAR &kp BSPC
    &kp LSHFT &trans   &assign_left &assign_right  &rust_match   &trans      &kp UNDER &kp PLUS  &kp LBRC        &kp RBRC &kp PIPE &kp TILDE
-                    	     &kp LGUI &trans   &kp SPACE   &kp RET   &trans    &kp RALT
+                    	     &kp LGUI &kp SPACE   &trans   &mo 3   &trans    &kp RALT
                         >;
                 };
+
+
+                  // Function keys with modifiers
+       		      fnc_layer {
+                      label = "FUNC";
+		                  bindings = <
+		&trans &sk LALT &sk LSHIFT  &sk LGUI &sk LCTRL &kp RALT     &trans &trans &kp PRINTSCREEN &trans &trans &trans
+		&kp F1 &kp F2 &kp F3 &kp F4 &kp F5 &kp F6             &kp F7 &kp F8 &kp F9 &kp F10 &kp F11 &kp F12 
+		&none &none &none &none &none &none                   &none &none &none &none &none &none
+                    	     &kp LGUI &kp SPACE   &trans   &trans   &trans    &kp RALT
+		                    >;
+		            };
+
         };
 };
