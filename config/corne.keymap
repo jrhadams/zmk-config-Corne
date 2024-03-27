@@ -36,6 +36,7 @@ ZMK_BEHAVIOR(hmr, hold_tap,
     hold-trigger-key-positions = <KEYS_L THUMBS>;
     hold-trigger-on-release;             // delay positional check until key-release
 )
+this should not wokr
 / {
 		macros {
 				assign_left: assign_left {
