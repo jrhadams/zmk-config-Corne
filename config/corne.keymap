@@ -110,7 +110,7 @@ ZMK_BEHAVIOR(hmr, hold_tap,
    &kp BACKSLASH &kp SQT &kp COMMA &hml &go_here_please DOT  &kp P &kp Y   &kp F &kp G  &kp C  &kp R   &kp L &kp SLASH
    &kp ESC &hml LGUI A &hml LALT O &hml LCTRL E &hml LSHIFT U &kp I   &kp D &hmr RSHIFT H  &hmr RCTRL T &hmr RALT N  &hmr LGUI S &kp TAB
    &kp GRAVE &kp SEMI &kp Q &kp J &kp K &kp X   &kp B &kp M  &kp W &kp V &kp Z &kp CAPS
-                  &kp LGUI &kp SPACE &mo 2   &mo 3 &kp RET &kp BKSP
+                  &kp LGUI &kp SPACE &mo 2   &mo 1 &kp RET &kp BKSP
                         >;
                 };
                 lower_layer {
@@ -133,12 +133,12 @@ ZMK_BEHAVIOR(hmr, hold_tap,
 // -----------------------------------------------------------------------------------------
 // |  TAB |     |  -  |  +  |  *  |  &  |   |  ^  |  [  |  ]  |     |     | BKSP |
 // | CTRL |  !  |  @  |  #  |  $  |  %  |   |  =  |  (  |  )  |     |  \  |  `   |
-// | SHFT |     | <-  | ->  | =>  |     |   |  _  |  {  |  }  |     | "|" |  ~   |
+// | SHFT |     | <-  | ->  | =>  | :=  |   |  _  |  {  |  }  |     | "|" |  ~   |
 //                    | GUI | SPC |     |   |     | RET | BKSP |
                         bindings = <
    &kp LCTRL &trans &kp MINUS  &kp PLUS &kp STAR &kp AMPS &kp CARET &kp LBKT &kp RBKT &none &none &none
    &kp  TAB  &kp EXCL &kp AT &kp HASH &kp DLLR &kp PRCNT &kp EQUAL &kp LPAR  &kp RPAR &none &none &kp BSPC
-   &kp LSHFT &trans &assign_left &assign_right  &rust_match   &trans  &kp UNDER &kp LBRC &kp RBRC &none &kp PIPE &kp TILDE
+   &kp LSHFT &trans &assign_left &assign_right  &rust_match  &assign_operator  &kp UNDER &kp LBRC &kp RBRC &none &kp PIPE &kp TILDE
                     	     &kp LGUI &kp SPACE   &trans   &mo 3   &trans    &kp RALT
                         >;
                 };
@@ -164,7 +164,7 @@ ZMK_BEHAVIOR(hmr, hold_tap,
 //                    | GUI | SPC |     |   |     | RET | BKSP |
                         bindings = <
 		&none &none &none &none &none &none                   &none &none &none &none &none &none
-		&none &none &none &none &none &none                   &none &kp LEFT &kp DOWN &kp UP &kp RIGHT
+		&none &none &none &none &none &none                   &none &kp LEFT &kp DOWN &kp UP &kp RIGHT &none
 		&none &none &none &none &none &none                   &none &none &none &none &none &none
                     	     &kp LGUI &kp SPACE   &trans   &mo 3   &kp RSHIFT    &kp RALT
                         >;
