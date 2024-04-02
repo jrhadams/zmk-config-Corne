@@ -6,8 +6,72 @@
 */
 
 #include <behaviors.dtsi>
+#include <dt-bindings/zmk/rgb.h>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/outputs.h>
+#include <dt-bindings/zmk/ext_power.h>
+
+
+/* use helper macros to define left and right hand keys */
+#include "../zmk-nodefree-config/helper.h"
+#include "../zmk-nodefree-config/keypos_def/keypos_42keys.h"
+
+#define KEYS_L LT0 LT1 LT2 LT3 LT4 LT5 LM0 LM1 LM2 LM3 LM4 LM5 LB0 LB1 LB2 LB3 LB4  LB5 // left-hand keys
+#define KEYS_R RT0 RT1 RT2 RT3 RT4 RT5 RM0 RM1 RM2 RM3 RM4 RM5 RB0 RB1 RB2 RB3 RB4 RB5  // right-hand keys
+#define THUMBS LH2 LH1 LH0 RH0 RH1 RH2                                      // thumb keys
+
+/* left-hand HRMs */
+
+
+ZMK_BEHAVIOR(hml, hold_tap,
+    flavor = "balanced";
+    tapping-term-ms = <280>;
+    quick-tap-ms = <175>;                // repeat on tap-into-hold
+    require-prior-idle-ms = <150>;
+    bindings = <&kp>, <&kp>;
+    hold-trigger-key-positions = <KEYS_R THUMBS>;
+    hold-trigger-on-release;             // delay positional check until key-release
+)
+
+/* right-hand HRMs */
+ZMK_BEHAVIOR(hmr, hold_tap,
+    flavor = "balanced";
+    tapping-term-ms = <280>;
+    quick-tap-ms = <175>;                // repeat on tap-into-hold
+    require-prior-idle-ms = <150>;
+    bindings = <&kp>, <&kp>;
+    hold-trigger-key-positions = <KEYS_L THUMBS>;
+    hold-trigger-on-release;             // delay positional check until key-release
+)
+
+/ {
+		macros {
+				assign_left: assign_left {
+					label = "ZM_assign_left";
+            				compatible = "zmk,behavior-macro";
+            				#binding-cells = <0>;
+            				bindings
+                				= <&kp LT &kp MINUS>;
+        			};
+				assign_right: assign_right {
+					label = "ZM_assign_right";
+            				compatible = "zmk,behavior-macro";
+            				#binding-cells = <0>;
+            				bindings
+                				= <&kp MINUS &kp GT>;
+				};
+				rust_match: rust_match {
+					label = "ZM_rust_match";
+            				compatible = "zmk,behavior-macro";
+            				#binding-cells = <0>;
+            				bindings
+                				= <&kp EQUAL &kp GT>;
+        			};
+				};
+
+};
+
 
 / {
   chosen {
@@ -21,47 +85,75 @@
                 compatible = "zmk,keymap";
 
                 default_layer {
-                        label = "QWERTY";
+                        label = "DVORAK";
 // -----------------------------------------------------------------------------------------
-// |  TAB |  Q  |  W  |  E  |  R  |  T  |   |  Y  |  U   |  I  |  O  |  P  | BKSP |
-// | CTRL |  A  |  S  |  D  |  F  |  G  |   |  H  |  J   |  K  |  L  |  ;  |  '   |
-// | SHFT |  Z  |  X  |  C  |  V  |  B  |   |  N  |  M   |  ,  |  .  |  /  | ESC  |
-//                    | GUI | LWR | SPC |   | ENT | RSE  | ALT |
+// | \ |  ' |  ,  |  .  |  p  |  y  |   |  F  |  G   |  C  |  R  |  L  | ? /  |
+// | ESC |  a  |  o  |  e  |  u  |  i  |   |  D  |  H   |  T  |  N  |  S  | TAB  |
+// | `~ | ;  |  q  |  j  |  k  |  x  |   |  b  |  m   |  w  |  v  |  z  | CAPS |
+//                    | GUI | SPC | LWR |   | RSE | ENT  | BKSP |
                         bindings = <
-   &kp TAB   &kp Q &kp W &kp E &kp R &kp T   &kp Y &kp U  &kp I     &kp O   &kp P    &kp BSPC
-   &kp LCTRL &kp A &kp S &kp D &kp F &kp G   &kp H &kp J  &kp K     &kp L   &kp SEMI &kp SQT
-   &kp LSHFT &kp Z &kp X &kp C &kp V &kp B   &kp N &kp M  &kp COMMA &kp DOT &kp FSLH &kp ESC
-                  &kp LGUI &mo 1 &kp SPACE   &kp RET &mo 2 &kp RALT
+   &kp BACKSLASH &kp SQT &kp COMMA &hml &mo 4 DOT  &kp P &kp Y   &kp F &kp G  &kp C  &kp R   &kp L &kp SLASH
+   &kp ESC &hml LGUI A &hml LALT O &hml LCTRL E &hml LSHIFT U &kp I   &kp D &hmr RSHIFT H  &hmr RCTRL T &hmr RALT N  &hmr LGUI S &kp TAB
+   &kp GRAVE &kp SEMI &kp Q &kp J &kp K &kp X   &kp B &kp M  &kp W &kp V &kp Z &kp CAPS
+                  &kp LGUI &kp SPACE &mo 1   &mo 2 &kp RET &kp BKSP
                         >;
                 };
                 lower_layer {
                         label = "NUMBER";
 // -----------------------------------------------------------------------------------------
-// | BTCLR| BT1 | BT2 | BT3 | BT4 | BT5 |   | LFT | DWN |  UP | RGT |     |      |
-// |  TAB |  1  |  2  |  3  |  4  |  5  |   |  6  |  7  |  8  |  9  |  0  | BKSP |
-// | SHFT |     |     |     |     |     |   |     |     |     |     |     |      |
-//                    | GUI |     | SPC |   | ENT |     | ALT |
+// | LFT  | - |  ,    |  .    |  +   | RGT   |   | BTCLR| BT1 | BT2 | BT3 | BT4 | BT5  |   
+// |  ESC |  1  |  2    |  3    |  4    |  5    |   |  6   |  7  |  8  |  9  |  0  | ESC  |
+// | SHFT | rgbn| rgb d | rgbt  | rgb i | pw_tg |   | prev| vol-| play| vol+| next |      |
+//                    | GUI | SPC |     |   | GUI | RET | BKSP |
                         bindings = <
-   &bt BT_CLR &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4   &kp LEFT &kp DOWN &kp UP &kp RIGHT &trans &trans
-   &kp TAB    &kp N1       &kp N2       &kp N3       &kp N4       &kp N5         &kp N6   &kp N7   &kp N8 &kp N9    &kp N0 &kp BSPC
-   &kp LSHFT  &trans       &trans       &trans       &trans       &trans         &trans   &trans   &trans &trans    &trans &trans
-                          	        &kp LGUI     &trans       &kp SPACE      &kp RET  &trans   &kp RALT
+   &kp LEFT &kp  MINUS &kp COMMA  &kp DOT &kp PLUS &kp RIGHT      &bt BT_CLR &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4   
+   &kp ESC &hml LGUI N1 &hml LALT N2 &hml LCTRL N3 &hml LSHIFT N4 &kp N5      &kp N6 &hmr RSHIFT N7 &hmr RCTRL N8 &hmr RALT N9 &hmr LGUI N0 &kp ESC
+   &kp LSHFT  &rgb_ug RGB_EFF   &rgb_ug RGB_HUD   &rgb_ug RGB_TOG  &rgb_ug RGB_HUI &ext_power EP_TOG &kp C_PREV &kp C_VOLUME_DOWN &kp C_PLAY_PAUSE &kp C_VOL_UP &kp C_NEXT  &trans
+                          	        &kp LGUI     &kp SPACE    &trans      &kp LGUI  &kp RET   &kp BKSP
                         >;
                 };
 
                 raise_layer {
                         label = "SYMBOL";
 // -----------------------------------------------------------------------------------------
-// |  TAB |  !  |  @  |  #  |  $  |  %  |   |  ^  |  &  |  *  |  (  |  )  | BKSP |
-// | CTRL |     |     |     |     |     |   |  -  |  =  |  [  |  ]  |  \  |  `   |
-// | SHFT |     |     |     |     |     |   |  _  |  +  |  {  |  }  | "|" |  ~   |
-//                    | GUI |     | SPC |   | ENT |     | ALT |
+// |  TAB |     |  -  |  +  |  *  |  &  |   |  ^  |  [  |  ]  |     |     | BKSP |
+// | CTRL |  !  |  @  |  #  |  $  |  %  |   |  =  |  (  |  )  |     |  \  |  `   |
+// | SHFT |     | <-  | ->  | =>  |     |   |  _  |  {  |  }  |     | "|" |  ~   |
+//                    | GUI | SPC |     |   |     | RET | BKSP |
                         bindings = <
-   &kp  TAB  &kp EXCL &kp AT &kp HASH &kp DLLR &kp PRCNT   &kp CARET &kp AMPS  &kp KP_MULTIPLY &kp LPAR &kp RPAR &kp BSPC
-   &kp LCTRL &trans   &trans &trans   &trans   &trans      &kp MINUS &kp EQUAL &kp LBKT        &kp RBKT &kp BSLH &kp GRAVE
-   &kp LSHFT &trans   &trans &trans   &trans   &trans      &kp UNDER &kp PLUS  &kp LBRC        &kp RBRC &kp PIPE &kp TILDE
-                    	     &kp LGUI &trans   &kp SPACE   &kp RET   &trans    &kp RALT
+   &kp LCTRL &trans &kp MINUS  &kp PLUS &kp STAR &kp AMPS &kp CARET &kp LBKT &kp RBKT &none &none &none
+   &kp  TAB  &kp EXCL &kp AT &kp HASH &kp DLLR &kp PRCNT &kp EQUAL &kp LPAR  &kp RPAR &none &none &kp BSPC
+   &kp LSHFT &trans &assign_left &assign_right  &rust_match   &trans  &kp UNDER &kp LBRC &kp RBRC &none &kp PIPE &kp TILDE
+                    	     &kp LGUI &kp SPACE   &trans   &mo 3   &trans    &kp RALT
                         >;
                 };
+
+
+                  // Function keys with modifiers
+       		      fnc_layer {
+                      label = "FUNC";
+		                  bindings = <
+		&trans &sk LALT &sk LSHIFT  &sk LGUI &sk LCTRL &kp RALT     &trans &trans &kp PRINTSCREEN &trans &trans &trans
+		&kp F1 &kp F2 &kp F3 &kp F4 &kp F5 &kp F6             &kp F7 &kp F8 &kp F9 &kp F10 &kp F11 &kp F12 
+		&none &none &none &none &none &none                   &none &none &none &none &none &none
+                    	     &kp LGUI &kp SPACE   &trans   &trans   &trans    &kp RALT
+		                    >;
+		            };
+
+                arrow_layer {
+                        label = "arrow";
+// -----------------------------------------------------------------------------------------
+// |  TAB |     |  -  |  +  |  *  |  &  |   |  ^  |  [  |  ]  |     |     | BKSP |
+// | CTRL |  !  |  @  |  #  |  $  |  %  |   |  =  |  (  |  )  |     |  \  |  `   |
+// | SHFT |     | <-  | ->  | =>  |     |   |  _  |  {  |  }  |     | "|" |  ~   |
+//                    | GUI | SPC |     |   |     | RET | BKSP |
+                        bindings = <
+		&none &none &none &none &none &none                   &none &none &none &none &none &none
+		&none &none &none &none &none &none                   &none &kp LEFT &kp DOWN &kp UP &kp RIGHT
+		&none &none &none &none &none &none                   &none &none &none &none &none &none
+                    	     &kp LGUI &kp SPACE   &trans   &mo 3   &kp RSHIFT    &kp RALT
+                        >;
+                };
+
         };
 };
